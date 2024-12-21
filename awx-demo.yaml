@@ -1,0 +1,45 @@
+---
+- name: configure my web server
+  hosts: all
+  vars:
+    fname: Dinesh
+    company:
+      name: GM
+      location: powai
+    students:
+    - name: paresh
+      location: mumbai
+    - name: rahul
+      location: Thane
+    - name: Ashish
+      location: Pune
+    
+    services:
+    - cron
+    - apparmor
+    - apache2
+
+    services2:
+    - name: cron
+      state:  disabled
+    - name: apparmor
+      state: started
+
+  tasks:
+    - name: itertion for lists or array
+      debug:
+        msg: | 
+          student name is {{ item.name }} is from location {{ item.location }}
+      loop: "{{ students }}"
+
+    - name: restarting services
+      service:
+        name: "{{ item }}" #  "{{ item.name }}"
+        state: restarted # "{{ item.state }}"
+      loop: "{{ services }}"
+      become: true
+
+
+...
+
+# foreach($temp in $list)
